@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MemeCraft – Create. Share. Dominate.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            bangers: ['Bangers', 'cursive'],
+            nunito: ['Nunito', 'sans-serif'],
+          },
+          colors: {
+            yellow: '#FFE600',
+            mblack: '#0a0a0a',
+            mwhite: '#FAFAFA',
+            red: '#FF2D55',
+            blue: '#00CFFF',
+            green: '#00FF94',
+            cardbg: '#141414',
+          },
+          boxShadow: {
+            'neo': '6px 6px 0 #FF2D55',
+            'neo-lg': '9px 9px 0 #FF2D55',
+            'neo-sm': '4px 4px 0 #FF2D55',
+            'neo-dark': '6px 6px 0 #333',
+            'neo-dark-lg': '9px 9px 0 #555',
+          },
+          keyframes: {
+            logoWiggle: {
+              '0%, 100%': { transform: 'rotate(-1deg)' },
+              '50%': { transform: 'rotate(1.5deg)' },
+            },
+            fadeUp: {
+              from: { opacity: '0', transform: 'translateY(30px)' },
+              to:   { opacity: '1', transform: 'translateY(0)' },
+            },
+            ticker: {
+              from: { transform: 'translateX(0)' },
+              to:   { transform: 'translateX(-50%)' },
+            },
+          },
+          animation: {
+            logoWiggle: 'logoWiggle 3s ease-in-out infinite',
+            fadeUp: 'fadeUp 0.6s ease both',
+            fadeUp1: 'fadeUp 0.7s 0.1s ease both',
+            fadeUp2: 'fadeUp 0.8s 0.2s ease both',
+            fadeUp3: 'fadeUp 0.9s 0.3s ease both',
+            fadeUp4: 'fadeUp 1s 0.4s ease both',
+            ticker: 'ticker 20s linear infinite',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #0a0a0a;
+      color: #FAFAFA;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='8' fill='%23FFE600' stroke='%230a0a0a' stroke-width='2'/%3E%3C/svg%3E") 12 12, auto;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* nav underline hover */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      height: 3px; width: 0;
+      background: #FFE600;
+      transition: width 0.25s;
+    }
+    .nav-link:hover { color: #FFE600; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* hero glow */
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      right: -120px; bottom: -120px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(255,230,0,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* meme-card offsets */
+    .meme-card-2 { transform: translateX(20px); }
+    .meme-card-3 { transform: translateX(-10px); }
+    .meme-card:hover { transform: rotate(-1deg) scale(1.03); border-color: #FFE600; }
+
+    /* feature card bar */
+    .feature-card { position: relative; overflow: hidden; }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: #FFE600;
+      transform: scaleY(0);
+      transition: transform 0.3s;
+      transform-origin: bottom;
+    }
+    .feature-card:hover::before { transform: scaleY(1); }
+
+    /* meme tile label */
+    .meme-tile::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(255,230,0,0.92);
+      color: #0a0a0a;
+      font-family: 'Bangers', cursive;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      text-align: center;
+      padding: 0.4rem;
+      transform: translateY(100%);
+      transition: transform 0.2s;
+    }
+    .meme-tile:hover::after { transform: translateY(0); }
+
+    /* text-stroke */
+    .outline-text {
+      -webkit-text-stroke: 3px #FFE600;
+      color: transparent;
+    }
+
+    /* mobile menu */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  </style>
+</head>
+<body class="bg-mblack text-mwhite font-nunito">
+
+  <!-- ══ NAVBAR (Tailwind) ══ -->
+  <nav class="sticky top-0 z-50 bg-mblack border-b-[3px] border-yellow">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <!-- Logo -->
+      <div class="font-bangers text-4xl tracking-widest text-yellow animate-logoWiggle"
+           style="text-shadow:4px 4px 0 #FF2D55">
+        MemeCraft
+      </div>
+
+      <!-- Desktop links -->
+      <ul class="hidden md:flex items-center gap-8 list-none">
+        <li><a href="#features" class="nav-link font-bold uppercase text-sm tracking-wide transition-colors duration-200">Features</a></li>
+        <li><a href="#trending" class="nav-link font-bold uppercase text-sm tracking-wide transition-colors duration-200">Trending</a></li>
+        <li><a href="#" class="nav-link font-bold uppercase text-sm tracking-wide transition-colors duration-200">Templates</a></li>
+        <li><a href="#" class="nav-link font-bold uppercase text-sm tracking-wide transition-colors duration-200">Community</a></li>
+        <li>
+          <a href="#register"
+             onclick="openModal()"
+             class="bg-yellow text-mblack font-black text-sm uppercase tracking-wide px-5 py-2 border-[3px] border-mblack shadow-neo-sm transition-all duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-neo no-underline">
+            Start Crafting →
+          </a>
+        </li>
+      </ul>
+
+      <!-- Hamburger (mobile) -->
+      <button id="hamburger" onclick="toggleMenu()"
+              class="md:hidden flex flex-col gap-1.5 cursor-pointer p-1 focus:outline-none" aria-label="Menu">
+        <span class="block w-6 h-0.5 bg-yellow transition-all" id="bar1"></span>
+        <span class="block w-6 h-0.5 bg-yellow transition-all" id="bar2"></span>
+        <span class="block w-6 h-0.5 bg-yellow transition-all" id="bar3"></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu dropdown -->
+    <div id="mobile-menu"
+         class="md:hidden flex-col gap-0 border-t-[3px] border-yellow bg-mblack">
+      <a href="#features" onclick="toggleMenu()" class="block px-6 py-3 font-bold uppercase text-sm tracking-wide border-b border-[#1e1e1e] hover:text-yellow hover:bg-[#141414] transition-colors">Features</a>
+      <a href="#trending" onclick="toggleMenu()" class="block px-6 py-3 font-bold uppercase text-sm tracking-wide border-b border-[#1e1e1e] hover:text-yellow hover:bg-[#141414] transition-colors">Trending</a>
+      <a href="#" class="block px-6 py-3 font-bold uppercase text-sm tracking-wide border-b border-[#1e1e1e] hover:text-yellow hover:bg-[#141414] transition-colors">Templates</a>
+      <a href="#" class="block px-6 py-3 font-bold uppercase text-sm tracking-wide border-b border-[#1e1e1e] hover:text-yellow hover:bg-[#141414] transition-colors">Community</a>
+      <div class="px-6 py-4">
+        <a href="#" class="inline-block bg-yellow text-mblack font-black text-sm uppercase tracking-wide px-5 py-2 border-[3px] border-mblack shadow-neo-sm">
+          Start Crafting →
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero-section min-h-[90vh] grid grid-cols-1 md:grid-cols-2 items-center px-6 md:px-10 py-16 gap-12 relative overflow-hidden">
+
+    <div class="animate-fadeUp">
+      <span class="inline-block bg-red text-mwhite font-black text-xs tracking-widest uppercase px-3 py-1 border-2 border-mblack mb-5 animate-fadeUp">
+        🔥 The Internet's Meme Studio
+      </span>
+      <h1 class="font-bangers tracking-widest leading-none animate-fadeUp1"
+          style="font-size:clamp(3.5rem,8vw,7rem)">
+        <span style="color:#FFE600;text-shadow:5px 5px 0 #FF2D55">CRAFT</span><br>
+        <span class="outline-text">VIRAL</span><br>
+        MEMES.
+      </h1>
+      <p class="mt-6 text-lg leading-relaxed text-[#aaa] max-w-xl animate-fadeUp2">
+        Create, remix, and share memes that break the internet. Drag-and-drop templates, custom fonts, stickers, and AI-powered caption suggestions — all in one place.
+      </p>
+
+      <!-- Hero buttons — Tailwind flex -->
+      <div class="mt-10 flex flex-wrap gap-4 animate-fadeUp3">
+        <a href="#"
+           class="inline-block px-8 py-3.5 font-black text-mblack uppercase tracking-wide text-base border-[3px] border-mblack bg-yellow shadow-neo transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-lg no-underline">
+          🎨 Create for Free
+        </a>
+        <a href="#trending"
+           class="inline-block px-8 py-3.5 font-black text-mwhite uppercase tracking-wide text-base border-[3px] border-mwhite bg-transparent shadow-neo-dark transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-dark-lg hover:text-yellow hover:border-yellow no-underline">
+          View Trending
+        </a>
+      </div>
+    </div>
+
+    <!-- Hero visual — Tailwind flex column -->
+    <div class="hidden md:flex flex-col gap-5 items-center animate-fadeUp4">
+      <div class="meme-card meme-card-2 bg-cardbg border-[3px] border-[#222] rounded-sm px-5 py-3 w-full max-w-sm flex items-center gap-4 transition-all duration-200 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div class="text-4xl flex-shrink-0">😂</div>
+        <div class="flex-1">
+          <div class="font-black text-sm">Monday Mood Check</div>
+          <div class="text-xs text-[#777] mt-0.5">2.3M views · 45K shares</div>
+        </div>
+        <span class="text-[0.7rem] font-black uppercase px-2 py-0.5 rounded-sm bg-red text-white">HOT</span>
+      </div>
+
+      <div class="meme-card meme-card-2 bg-cardbg border-[3px] border-[#222] rounded-sm px-5 py-3 w-full max-w-sm flex items-center gap-4 transition-all duration-200 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div class="text-4xl flex-shrink-0">🐸</div>
+        <div class="flex-1">
+          <div class="font-black text-sm">Feels That Way</div>
+          <div class="text-xs text-[#777] mt-0.5">890K views · 12K shares</div>
+        </div>
+        <span class="text-[0.7rem] font-black uppercase px-2 py-0.5 rounded-sm bg-green text-mblack">TREND</span>
+      </div>
+
+      <div class="meme-card meme-card-3 bg-cardbg border-[3px] border-[#222] rounded-sm px-5 py-3 w-full max-w-sm flex items-center gap-4 transition-all duration-200 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div class="text-4xl flex-shrink-0">🤡</div>
+        <div class="flex-1">
+          <div class="font-black text-sm">Me vs My Brain</div>
+          <div class="text-xs text-[#777] mt-0.5">1.1M views · 30K shares</div>
+        </div>
+        <span class="text-[0.7rem] font-black uppercase px-2 py-0.5 rounded-sm bg-blue text-mblack">NEW</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TICKER ══ -->
+  <div class="bg-yellow text-mblack overflow-hidden border-t-[3px] border-b-[3px] border-mblack py-2">
+    <!-- ticker-inner uses flex -->
+    <div class="flex gap-12 whitespace-nowrap animate-ticker font-bangers text-lg tracking-wide">
+      <span class="mr-12">😂 Create Memes</span>
+      <span class="mr-12">🔥 Go Viral</span>
+      <span class="mr-12">🎨 500+ Templates</span>
+      <span class="mr-12">🤖 AI Captions</span>
+      <span class="mr-12">🌍 Share Everywhere</span>
+      <span class="mr-12">⚡ Instant Export</span>
+      <span class="mr-12">😂 Create Memes</span>
+      <span class="mr-12">🔥 Go Viral</span>
+      <span class="mr-12">🎨 500+ Templates</span>
+      <span class="mr-12">🤖 AI Captions</span>
+      <span class="mr-12">🌍 Share Everywhere</span>
+      <span class="mr-12">⚡ Instant Export</span>
+    </div>
+  </div>
+
+  <!-- ══ FEATURES ══ -->
+  <section class="max-w-7xl mx-auto px-6 md:px-10 py-24" id="features">
+    <div class="text-xs tracking-[3px] uppercase text-yellow font-black mb-2">Why MemeCraft?</div>
+    <h2 class="font-bangers tracking-widest mb-14" style="font-size:clamp(2.5rem,5vw,4rem);line-height:1">
+      Tools Built for <span class="text-yellow">Internet Culture</span>
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="feature-card bg-cardbg border-[3px] border-[#1e1e1e] p-8 transition-all duration-200 hover:-translate-y-1.5 hover:border-[#333]">
+        <span class="text-4xl mb-4 block">🎨</span>
+        <h3 class="font-bangers text-2xl tracking-wide text-yellow mb-2">Drag & Drop Editor</h3>
+        <p class="text-[#888] text-sm leading-relaxed">No design skills needed. Pick a template, slap your text, and you're done in seconds.</p>
+      </div>
+      <div class="feature-card bg-cardbg border-[3px] border-[#1e1e1e] p-8 transition-all duration-200 hover:-translate-y-1.5 hover:border-[#333]">
+        <span class="text-4xl mb-4 block">🤖</span>
+        <h3 class="font-bangers text-2xl tracking-wide text-yellow mb-2">AI Caption Magic</h3>
+        <p class="text-[#888] text-sm leading-relaxed">Our AI reads the room and suggests captions that actually hit different every time.</p>
+      </div>
+      <div class="feature-card bg-cardbg border-[3px] border-[#1e1e1e] p-8 transition-all duration-200 hover:-translate-y-1.5 hover:border-[#333]">
+        <span class="text-4xl mb-4 block">📚</span>
+        <h3 class="font-bangers text-2xl tracking-wide text-yellow mb-2">500+ Templates</h3>
+        <p class="text-[#888] text-sm leading-relaxed">From classic formats to fresh trending formats — our library never sleeps.</p>
+      </div>
+      <div class="feature-card bg-cardbg border-[3px] border-[#1e1e1e] p-8 transition-all duration-200 hover:-translate-y-1.5 hover:border-[#333]">
+        <span class="text-4xl mb-4 block">⚡</span>
+        <h3 class="font-bangers text-2xl tracking-wide text-yellow mb-2">One-Click Share</h3>
+        <p class="text-[#888] text-sm leading-relaxed">Export to PNG, GIF, or video. Share directly to Twitter, Reddit, Instagram, WhatsApp.</p>
+      </div>
+      <div class="feature-card bg-cardbg border-[3px] border-[#1e1e1e] p-8 transition-all duration-200 hover:-translate-y-1.5 hover:border-[#333]">
+        <span class="text-4xl mb-4 block">🌍</span>
+        <h3 class="font-bangers text-2xl tracking-wide text-yellow mb-2">Community Feed</h3>
+        <p class="text-[#888] text-sm leading-relaxed">See what's popping, remix others' memes, and build your meme legacy.</p>
+      </div>
+      <div class="feature-card bg-cardbg border-[3px] border-[#1e1e1e] p-8 transition-all duration-200 hover:-translate-y-1.5 hover:border-[#333]">
+        <span class="text-4xl mb-4 block">💾</span>
+        <h3 class="font-bangers text-2xl tracking-wide text-yellow mb-2">Save Your Creations</h3>
+        <p class="text-[#888] text-sm leading-relaxed">Never lose a masterpiece. Cloud save all your drafts and finished memes forever.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STATS ══ -->
+  <!-- Tailwind flex wrap -->
+  <div class="bg-yellow border-t-[3px] border-b-[3px] border-mblack py-12 flex flex-wrap justify-center gap-16 px-6">
+    <div class="text-center">
+      <span class="font-bangers text-6xl text-mblack tracking-widest block leading-none">12M+</span>
+      <span class="text-xs font-black uppercase tracking-widest text-[#333]">Memes Created</span>
+    </div>
+    <div class="text-center">
+      <span class="font-bangers text-6xl text-mblack tracking-widest block leading-none">500K+</span>
+      <span class="text-xs font-black uppercase tracking-widest text-[#333]">Active Creators</span>
+    </div>
+    <div class="text-center">
+      <span class="font-bangers text-6xl text-mblack tracking-widest block leading-none">500+</span>
+      <span class="text-xs font-black uppercase tracking-widest text-[#333]">Templates</span>
+    </div>
+    <div class="text-center">
+      <span class="font-bangers text-6xl text-mblack tracking-widest block leading-none">98%</span>
+      <span class="text-xs font-black uppercase tracking-widest text-[#333]">Certified Funny</span>
+    </div>
+  </div>
+
+  <!-- ══ TRENDING ══ -->
+  <section class="max-w-7xl mx-auto px-6 md:px-10 py-24" id="trending">
+    <div class="text-xs tracking-[3px] uppercase text-yellow font-black mb-2">Right Now</div>
+    <h2 class="font-bangers tracking-widest mb-10" style="font-size:clamp(2.5rem,5vw,4rem);line-height:1">
+      Trending <span class="text-yellow">Formats</span>
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="meme-tile bg-cardbg border-[3px] border-[#1e1e1e] aspect-square flex items-center justify-center text-5xl relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-105 hover:border-yellow"
+           data-label="Drake Pointing">
+        😒👉😎
+        <span class="absolute top-2 right-2 bg-red text-white text-[0.65rem] font-black px-1.5 py-0.5 rounded-sm">❤️ 120K</span>
+      </div>
+      <div class="meme-tile bg-cardbg border-[3px] border-[#1e1e1e] aspect-square flex items-center justify-center text-5xl relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-105 hover:border-yellow"
+           data-label="This Is Fine">
+        🔥☕🐶
+        <span class="absolute top-2 right-2 bg-red text-white text-[0.65rem] font-black px-1.5 py-0.5 rounded-sm">❤️ 95K</span>
+      </div>
+      <div class="meme-tile bg-cardbg border-[3px] border-[#1e1e1e] aspect-square flex items-center justify-center text-5xl relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-105 hover:border-yellow"
+           data-label="Distracted BF">
+        👀💃😤
+        <span class="absolute top-2 right-2 bg-red text-white text-[0.65rem] font-black px-1.5 py-0.5 rounded-sm">❤️ 88K</span>
+      </div>
+      <div class="meme-tile bg-cardbg border-[3px] border-[#1e1e1e] aspect-square flex items-center justify-center text-5xl relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-105 hover:border-yellow"
+           data-label="Surprised Pikachu">
+        ⚡😮✨
+        <span class="absolute top-2 right-2 bg-red text-white text-[0.65rem] font-black px-1.5 py-0.5 rounded-sm">❤️ 77K</span>
+      </div>
+      <div class="meme-tile bg-cardbg border-[3px] border-[#1e1e1e] aspect-square flex items-center justify-center text-5xl relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-105 hover:border-yellow"
+           data-label="Woman Yelling">
+        😤🐱🗣️
+        <span class="absolute top-2 right-2 bg-red text-white text-[0.65rem] font-black px-1.5 py-0.5 rounded-sm">❤️ 66K</span>
+      </div>
+      <div class="meme-tile bg-cardbg border-[3px] border-[#1e1e1e] aspect-square flex items-center justify-center text-5xl relative overflow-hidden cursor-pointer transition-all duration-200 hover:scale-105 hover:border-yellow"
+           data-label="Blinking Guy">
+        👁️👁️😐
+        <span class="absolute top-2 right-2 bg-red text-white text-[0.65rem] font-black px-1.5 py-0.5 rounded-sm">❤️ 54K</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <!-- Tailwind flex -->
+  <div class="mx-6 md:mx-10 my-16 bg-yellow border-[3px] border-mblack shadow-[10px_10px_0_#FF2D55] px-10 py-16
+              flex flex-col md:flex-row items-center justify-between gap-8">
+    <div>
+      <h2 class="font-bangers text-mblack tracking-widest leading-none" style="font-size:clamp(2rem,4vw,3.5rem)">
+        Stop Scrolling. Start Creating.
+      </h2>
+      <p class="text-[#333] mt-2 text-base font-bold">Join 500,000+ meme lords who already use MemeCraft to rule the internet.</p>
+    </div>
+    <a href="#"
+       class="bg-mblack text-yellow font-black uppercase tracking-wide text-base px-8 py-4 border-[3px] border-mblack shadow-neo-dark whitespace-nowrap transition-all duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-dark-lg no-underline">
+      🚀 Get Started Free
+    </a>
+  </div>
+
+  <!-- ══ REGISTRATION SECTION ══ -->
+  <section id="register" class="max-w-2xl mx-auto px-6 md:px-10 py-24">
+    <div class="text-xs tracking-[3px] uppercase text-yellow font-black mb-2">Join The Crew</div>
+    <h2 class="font-bangers tracking-widest mb-2" style="font-size:clamp(2.5rem,5vw,4rem);line-height:1">
+      Create Your <span class="text-yellow">Account</span>
+    </h2>
+    <p class="text-[#888] mb-10 text-sm">Already 500K+ meme lords inside. Your spot is waiting.</p>
+
+    <div class="bg-cardbg border-[3px] border-[#1e1e1e] p-8 md:p-10 shadow-[8px_8px_0_#FF2D55]">
+
+      <!-- Step indicator -->
+      <div class="flex items-center gap-3 mb-8">
+        <div id="step-dot-1" class="w-8 h-8 rounded-full bg-yellow text-mblack font-black text-sm flex items-center justify-center border-2 border-mblack transition-all">1</div>
+        <div id="step-line" class="flex-1 h-[3px] bg-[#222] transition-all"><div id="step-progress" class="h-full bg-yellow transition-all duration-500" style="width:0%"></div></div>
+        <div id="step-dot-2" class="w-8 h-8 rounded-full bg-[#222] text-[#666] font-black text-sm flex items-center justify-center border-2 border-[#333] transition-all">2</div>
+        <div class="flex-1 h-[3px] bg-[#222]"><div id="step-progress2" class="h-full bg-yellow transition-all duration-500" style="width:0%"></div></div>
+        <div id="step-dot-3" class="w-8 h-8 rounded-full bg-[#222] text-[#666] font-black text-sm flex items-center justify-center border-2 border-[#333] transition-all">3</div>
+      </div>
+
+      <!-- STEP 1: Personal Info -->
+      <div id="step1">
+        <h3 class="font-bangers text-2xl text-yellow tracking-wide mb-6">Step 1 — Who Are You? 👤</h3>
+        <div class="flex flex-col gap-5">
+
+          <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex-1">
+              <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">First Name *</label>
+              <input id="firstName" type="text" placeholder="Doge"
+                class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+              <p id="err-firstName" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ First name is required</p>
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Last Name *</label>
+              <input id="lastName" type="text" placeholder="Wow"
+                class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+              <p id="err-lastName" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ Last name is required</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Username *</label>
+            <div class="relative">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-yellow font-black text-sm">@</span>
+              <input id="username" type="text" placeholder="meme_lord_9000"
+                class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite pl-9 pr-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+            </div>
+            <p id="err-username" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ Username must be 3–20 characters (letters, numbers, _ only)</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Email Address *</label>
+            <input id="email" type="email" placeholder="you@dankmail.com"
+              class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+            <p id="err-email" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ Enter a valid email address</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Date of Birth *</label>
+            <input id="dob" type="date"
+              class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow [color-scheme:dark]"/>
+            <p id="err-dob" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ You must be at least 13 years old</p>
+          </div>
+
+        </div>
+        <button onclick="goStep2()"
+          class="mt-8 w-full bg-yellow text-mblack font-black uppercase tracking-widest text-base py-4 border-[3px] border-mblack shadow-neo transition-all hover:-translate-y-1 hover:shadow-neo-lg active:translate-y-0">
+          Next: Security Info →
+        </button>
+      </div>
+
+      <!-- STEP 2: Security -->
+      <div id="step2" class="hidden">
+        <h3 class="font-bangers text-2xl text-yellow tracking-wide mb-6">Step 2 — Lock It Down 🔐</h3>
+        <div class="flex flex-col gap-5">
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Password *</label>
+            <div class="relative">
+              <input id="password" type="password" placeholder="Make it spicy 🌶️"
+                class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 pr-12 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+              <button type="button" onclick="togglePwd('password','eyeIcon1')" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#555] hover:text-yellow transition-colors text-lg" id="eyeIcon1">👁</button>
+            </div>
+            <!-- strength bar -->
+            <div class="mt-2 flex gap-1">
+              <div id="sb1" class="h-1.5 flex-1 rounded-full bg-[#2a2a2a] transition-all"></div>
+              <div id="sb2" class="h-1.5 flex-1 rounded-full bg-[#2a2a2a] transition-all"></div>
+              <div id="sb3" class="h-1.5 flex-1 rounded-full bg-[#2a2a2a] transition-all"></div>
+              <div id="sb4" class="h-1.5 flex-1 rounded-full bg-[#2a2a2a] transition-all"></div>
+            </div>
+            <p id="strength-label" class="text-xs font-bold mt-1 text-[#555]">Password strength</p>
+            <p id="err-password" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ Min 8 chars with uppercase, number & special character</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Confirm Password *</label>
+            <div class="relative">
+              <input id="confirmPassword" type="password" placeholder="Same as above!"
+                class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 pr-12 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+              <button type="button" onclick="togglePwd('confirmPassword','eyeIcon2')" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#555] hover:text-yellow transition-colors text-lg" id="eyeIcon2">👁</button>
+            </div>
+            <p id="err-confirmPassword" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ Passwords do not match</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Phone Number (optional)</label>
+            <input id="phone" type="tel" placeholder="+1 800 MEME LOL"
+              class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444]"/>
+            <p id="err-phone" class="err-msg hidden text-red text-xs font-bold mt-1">⚠ Enter a valid phone number (10–15 digits)</p>
+          </div>
+
+        </div>
+        <div class="flex gap-4 mt-8">
+          <button onclick="goStep1()"
+            class="flex-1 bg-transparent text-mwhite font-black uppercase tracking-widest text-base py-4 border-[3px] border-[#333] transition-all hover:border-yellow hover:text-yellow">
+            ← Back
+          </button>
+          <button onclick="goStep3()"
+            class="flex-1 bg-yellow text-mblack font-black uppercase tracking-widest text-base py-4 border-[3px] border-mblack shadow-neo transition-all hover:-translate-y-1 hover:shadow-neo-lg">
+            Next: Preferences →
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 3: Preferences -->
+      <div id="step3" class="hidden">
+        <h3 class="font-bangers text-2xl text-yellow tracking-wide mb-6">Step 3 — Your Vibe 🎨</h3>
+        <div class="flex flex-col gap-5">
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-3">Favorite Meme Category *</label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="categoryGroup">
+              <label class="meme-cat-option cursor-pointer">
+                <input type="radio" name="memecat" value="Reaction" class="hidden peer"/>
+                <div class="peer-checked:bg-yellow peer-checked:text-mblack peer-checked:border-yellow bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-center py-3 px-2 text-sm font-black transition-all hover:border-yellow hover:text-yellow">😂 Reaction</div>
+              </label>
+              <label class="meme-cat-option cursor-pointer">
+                <input type="radio" name="memecat" value="Dank" class="hidden peer"/>
+                <div class="peer-checked:bg-yellow peer-checked:text-mblack peer-checked:border-yellow bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-center py-3 px-2 text-sm font-black transition-all hover:border-yellow hover:text-yellow">🔥 Dank</div>
+              </label>
+              <label class="meme-cat-option cursor-pointer">
+                <input type="radio" name="memecat" value="Gaming" class="hidden peer"/>
+                <div class="peer-checked:bg-yellow peer-checked:text-mblack peer-checked:border-yellow bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-center py-3 px-2 text-sm font-black transition-all hover:border-yellow hover:text-yellow">🎮 Gaming</div>
+              </label>
+              <label class="meme-cat-option cursor-pointer">
+                <input type="radio" name="memecat" value="Political" class="hidden peer"/>
+                <div class="peer-checked:bg-yellow peer-checked:text-mblack peer-checked:border-yellow bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-center py-3 px-2 text-sm font-black transition-all hover:border-yellow hover:text-yellow">🏛️ Political</div>
+              </label>
+              <label class="meme-cat-option cursor-pointer">
+                <input type="radio" name="memecat" value="Animals" class="hidden peer"/>
+                <div class="peer-checked:bg-yellow peer-checked:text-mblack peer-checked:border-yellow bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-center py-3 px-2 text-sm font-black transition-all hover:border-yellow hover:text-yellow">🐶 Animals</div>
+              </label>
+              <label class="meme-cat-option cursor-pointer">
+                <input type="radio" name="memecat" value="Random" class="hidden peer"/>
+                <div class="peer-checked:bg-yellow peer-checked:text-mblack peer-checked:border-yellow bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-center py-3 px-2 text-sm font-black transition-all hover:border-yellow hover:text-yellow">🎲 Random</div>
+              </label>
+            </div>
+            <p id="err-category" class="err-msg hidden text-red text-xs font-bold mt-2">⚠ Pick at least one category</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-black uppercase tracking-widest text-[#aaa] mb-1.5">Bio <span class="text-[#555] normal-case tracking-normal font-normal">(optional, max 150 chars)</span></label>
+            <textarea id="bio" rows="3" placeholder="I craft memes for sport, not profit..."
+              class="reg-input w-full bg-[#0e0e0e] border-[3px] border-[#2a2a2a] text-mwhite px-4 py-3 text-sm font-bold outline-none transition-all focus:border-yellow placeholder-[#444] resize-none"></textarea>
+            <div class="flex justify-between mt-1">
+              <p id="err-bio" class="err-msg hidden text-red text-xs font-bold">⚠ Bio cannot exceed 150 characters</p>
+              <p id="bio-count" class="text-xs text-[#555] ml-auto">0 / 150</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-3">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input id="terms" type="checkbox" class="mt-0.5 accent-yellow w-4 h-4 flex-shrink-0"/>
+              <span class="text-sm text-[#aaa]">I agree to the <a href="#" class="text-yellow font-bold hover:underline">Terms of Service</a> and <a href="#" class="text-yellow font-bold hover:underline">Privacy Policy</a> *</span>
+            </label>
+            <p id="err-terms" class="err-msg hidden text-red text-xs font-bold">⚠ You must accept the terms to continue</p>
+
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input id="newsletter" type="checkbox" class="mt-0.5 accent-yellow w-4 h-4 flex-shrink-0"/>
+              <span class="text-sm text-[#aaa]">Send me dank weekly meme digests 📬</span>
+            </label>
+          </div>
+
+        </div>
+        <div class="flex gap-4 mt-8">
+          <button onclick="goStep2()"
+            class="flex-1 bg-transparent text-mwhite font-black uppercase tracking-widest text-base py-4 border-[3px] border-[#333] transition-all hover:border-yellow hover:text-yellow">
+            ← Back
+          </button>
+          <button onclick="submitForm()"
+            class="flex-1 bg-yellow text-mblack font-black uppercase tracking-widest text-base py-4 border-[3px] border-mblack shadow-neo transition-all hover:-translate-y-1 hover:shadow-neo-lg">
+            🚀 Create Account
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SUCCESS MODAL ══ -->
+  <div id="successModal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/80 backdrop-blur-sm px-4">
+    <div class="bg-cardbg border-[3px] border-yellow shadow-[12px_12px_0_#FF2D55] max-w-md w-full p-10 text-center animate-fadeUp">
+      <div class="text-6xl mb-4">🎉</div>
+      <h2 class="font-bangers text-4xl text-yellow tracking-widest mb-2">Welcome, Meme Lord!</h2>
+      <p id="welcome-name" class="text-[#aaa] text-sm mb-6">You're officially part of the MemeCraft crew.</p>
+      <div class="bg-[#111] border-[2px] border-[#222] px-5 py-4 text-left mb-6 text-sm">
+        <div class="flex justify-between mb-2"><span class="text-[#555] font-bold uppercase text-xs">Username</span><span id="confirm-user" class="text-yellow font-black"></span></div>
+        <div class="flex justify-between mb-2"><span class="text-[#555] font-bold uppercase text-xs">Email</span><span id="confirm-email" class="text-mwhite font-bold text-xs"></span></div>
+        <div class="flex justify-between"><span class="text-[#555] font-bold uppercase text-xs">Category</span><span id="confirm-cat" class="text-green font-black"></span></div>
+      </div>
+      <button onclick="closeModal()"
+        class="w-full bg-yellow text-mblack font-black uppercase tracking-widest py-3 border-[3px] border-mblack shadow-neo transition-all hover:-translate-y-1 hover:shadow-neo-lg">
+        Start Crafting Memes 🎨
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <!-- Tailwind flex wrap -->
+  <footer class="border-t-[3px] border-[#1e1e1e] px-6 md:px-10 py-12
+                 flex flex-wrap items-center justify-between gap-4">
+    <div class="font-bangers text-3xl tracking-widest text-yellow" style="text-shadow:3px 3px 0 #FF2D55">
+      MemeCraft
+    </div>
+    <p class="text-[#555] text-sm">© 2026 MemeCraft. All memes reserved. 😂</p>
+    <!-- Footer links — Tailwind flex -->
+    <div class="flex items-center gap-6">
+      <a href="#" class="text-[#555] text-sm font-bold no-underline transition-colors hover:text-yellow">Privacy</a>
+      <a href="#" class="text-[#555] text-sm font-bold no-underline transition-colors hover:text-yellow">Terms</a>
+      <a href="#" class="text-[#555] text-sm font-bold no-underline transition-colors hover:text-yellow">Contact</a>
+      <a href="#" class="text-[#555] text-sm font-bold no-underline transition-colors hover:text-yellow">Blog</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ── MOBILE NAV ── */
+    function toggleMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const b1 = document.getElementById('bar1');
+      const b2 = document.getElementById('bar2');
+      const b3 = document.getElementById('bar3');
+      menu.classList.toggle('open');
+      if (menu.classList.contains('open')) {
+        b1.style.transform = 'rotate(45deg) translate(5px,5px)';
+        b2.style.opacity = '0';
+        b3.style.transform = 'rotate(-45deg) translate(5px,-5px)';
+      } else {
+        b1.style.transform = ''; b2.style.opacity = ''; b3.style.transform = '';
+      }
+    }
+
+    /* ── HELPERS ── */
+    function showErr(id, msg) {
+      const el = document.getElementById('err-' + id);
+      if (el) { el.textContent = '⚠ ' + msg; el.classList.remove('hidden'); }
+      const inp = document.getElementById(id);
+      if (inp) inp.style.borderColor = '#FF2D55';
+    }
+    function clearErr(id) {
+      const el = document.getElementById('err-' + id);
+      if (el) el.classList.add('hidden');
+      const inp = document.getElementById(id);
+      if (inp) inp.style.borderColor = '';
+    }
+    function markOk(id) {
+      const inp = document.getElementById(id);
+      if (inp) inp.style.borderColor = '#00FF94';
+    }
+
+    /* ── STEP PROGRESS ── */
+    function setStep(n) {
+      ['step1','step2','step3'].forEach((s,i) => {
+        document.getElementById(s).classList.toggle('hidden', i !== n-1);
+      });
+      const dots = [
+        document.getElementById('step-dot-1'),
+        document.getElementById('step-dot-2'),
+        document.getElementById('step-dot-3'),
+      ];
+      dots.forEach((d,i) => {
+        if (i < n) {
+          d.classList.add('bg-yellow','text-mblack','border-yellow');
+          d.classList.remove('bg-[#222]','text-[#666]','border-[#333]');
+          d.textContent = i < n-1 ? '✓' : (i+1);
+        } else {
+          d.classList.remove('bg-yellow','text-mblack','border-yellow');
+          d.classList.add('bg-[#222]','text-[#666]','border-[#333]');
+          d.textContent = i+1;
+        }
+      });
+      document.getElementById('step-progress').style.width  = n >= 2 ? '100%' : '0%';
+      document.getElementById('step-progress2').style.width = n >= 3 ? '100%' : '0%';
+    }
+
+    /* ── PASSWORD TOGGLE ── */
+    function togglePwd(inputId, iconId) {
+      const inp = document.getElementById(inputId);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      document.getElementById(iconId).textContent = inp.type === 'password' ? '👁' : '🙈';
+    }
+
+    /* ── PASSWORD STRENGTH ── */
+    document.addEventListener('DOMContentLoaded', () => {
+      const pwd = document.getElementById('password');
+      if (pwd) pwd.addEventListener('input', updateStrength);
+
+      const bio = document.getElementById('bio');
+      if (bio) bio.addEventListener('input', () => {
+        document.getElementById('bio-count').textContent = bio.value.length + ' / 150';
+      });
+
+      // live real-time validation
+      ['firstName','lastName','username','email','dob','password','confirmPassword'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('blur', () => liveValidate(id));
+      });
+    });
+
+    function updateStrength() {
+      const val = document.getElementById('password').value;
+      const bars = ['sb1','sb2','sb3','sb4'];
+      const label = document.getElementById('strength-label');
+      let score = 0;
+      if (val.length >= 8)           score++;
+      if (/[A-Z]/.test(val))         score++;
+      if (/[0-9]/.test(val))         score++;
+      if (/[^A-Za-z0-9]/.test(val))  score++;
+      const colors = ['#FF2D55','#FF9500','#FFE600','#00FF94'];
+      const labels = ['Weak 😬','Fair 😐','Good 👍','Strong 💪'];
+      bars.forEach((b,i) => {
+        document.getElementById(b).style.background = i < score ? colors[score-1] : '#2a2a2a';
+      });
+      label.textContent = val.length === 0 ? 'Password strength' : labels[score-1] || 'Weak 😬';
+      label.style.color = val.length === 0 ? '#555' : colors[score-1] || '#FF2D55';
+    }
+
+    function liveValidate(id) {
+      const val = (document.getElementById(id)?.value || '').trim();
+      switch(id) {
+        case 'firstName':
+        case 'lastName':
+          if (!val) showErr(id, id === 'firstName' ? 'First name is required' : 'Last name is required');
+          else { clearErr(id); markOk(id); }
+          break;
+        case 'username':
+          if (!/^[a-zA-Z0-9_]{3,20}$/.test(val)) showErr('username','Username must be 3–20 chars (letters, numbers, _ only)');
+          else { clearErr('username'); markOk('username'); }
+          break;
+        case 'email':
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) showErr('email','Enter a valid email address');
+          else { clearErr('email'); markOk('email'); }
+          break;
+        case 'dob':
+          const age = getAge(val);
+          if (!val || age < 13) showErr('dob','You must be at least 13 years old');
+          else { clearErr('dob'); markOk('dob'); }
+          break;
+        case 'password':
+          if (!isStrongPwd(val)) showErr('password','Min 8 chars with uppercase, number & special character');
+          else { clearErr('password'); markOk('password'); }
+          break;
+        case 'confirmPassword':
+          const pwd = document.getElementById('password').value;
+          if (val !== pwd) showErr('confirmPassword','Passwords do not match');
+          else { clearErr('confirmPassword'); markOk('confirmPassword'); }
+          break;
+      }
+    }
+
+    function getAge(dob) {
+      if (!dob) return 0;
+      const today = new Date(), birth = new Date(dob);
+      let age = today.getFullYear() - birth.getFullYear();
+      const m = today.getMonth() - birth.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+      return age;
+    }
+
+    function isStrongPwd(p) {
+      return p.length >= 8 && /[A-Z]/.test(p) && /[0-9]/.test(p) && /[^A-Za-z0-9]/.test(p);
+    }
+
+    /* ── STEP NAVIGATION ── */
+    function goStep2() {
+      let ok = true;
+      const fn = document.getElementById('firstName').value.trim();
+      const ln = document.getElementById('lastName').value.trim();
+      const un = document.getElementById('username').value.trim();
+      const em = document.getElementById('email').value.trim();
+      const dob = document.getElementById('dob').value;
+
+      if (!fn) { showErr('firstName','First name is required'); ok=false; } else { clearErr('firstName'); markOk('firstName'); }
+      if (!ln) { showErr('lastName','Last name is required'); ok=false; } else { clearErr('lastName'); markOk('lastName'); }
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(un)) { showErr('username','3–20 chars, letters/numbers/_ only'); ok=false; } else { clearErr('username'); markOk('username'); }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) { showErr('email','Enter a valid email address'); ok=false; } else { clearErr('email'); markOk('email'); }
+      if (!dob || getAge(dob) < 13) { showErr('dob','You must be at least 13 years old'); ok=false; } else { clearErr('dob'); markOk('dob'); }
+
+      if (ok) { setStep(2); window.scrollTo({top: document.getElementById('register').offsetTop - 80, behavior:'smooth'}); }
+    }
+
+    function goStep1() { setStep(1); }
+
+    function goStep3() {
+      let ok = true;
+      const pwd = document.getElementById('password').value;
+      const cpwd = document.getElementById('confirmPassword').value;
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!isStrongPwd(pwd)) { showErr('password','Min 8 chars with uppercase, number & special character'); ok=false; } else { clearErr('password'); markOk('password'); }
+      if (pwd !== cpwd) { showErr('confirmPassword','Passwords do not match'); ok=false; } else { clearErr('confirmPassword'); markOk('confirmPassword'); }
+      if (phone && !/^\+?[\d\s\-]{10,15}$/.test(phone)) { showErr('phone','Enter a valid phone number (10–15 digits)'); ok=false; } else clearErr('phone');
+
+      if (ok) { setStep(3); window.scrollTo({top: document.getElementById('register').offsetTop - 80, behavior:'smooth'}); }
+    }
+
+    function goStep2again() { setStep(2); }
+
+    function submitForm() {
+      let ok = true;
+      const cat = document.querySelector('input[name="memecat"]:checked');
+      const bio = document.getElementById('bio').value;
+      const terms = document.getElementById('terms').checked;
+
+      if (!cat) { showErr('category','Pick at least one meme category'); ok=false; } else clearErr('category');
+      if (bio.length > 150) { showErr('bio','Bio cannot exceed 150 characters'); ok=false; } else clearErr('bio');
+      if (!terms) { showErr('terms','You must accept the terms to continue'); ok=false; } else clearErr('terms');
+
+      if (!ok) return;
+
+      // Populate success modal
+      const firstName = document.getElementById('firstName').value.trim();
+      const username  = document.getElementById('username').value.trim();
+      const email     = document.getElementById('email').value.trim();
+      document.getElementById('welcome-name').textContent = `Hey ${firstName}, you're officially part of the MemeCraft crew! 🔥`;
+      document.getElementById('confirm-user').textContent  = '@' + username;
+      document.getElementById('confirm-email').textContent = email;
+      document.getElementById('confirm-cat').textContent   = cat.value;
+
+      openModal();
+    }
+
+    function openModal() {
+      const m = document.getElementById('successModal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+    function closeModal() {
+      const m = document.getElementById('successModal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+      // scroll back to top
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // Close modal on backdrop click
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('successModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+    });
+  </script>
+</body>
+</html>
