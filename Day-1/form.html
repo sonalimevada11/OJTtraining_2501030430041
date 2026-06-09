@@ -1,0 +1,39 @@
+<html>
+    <head>  
+        <title>Practical 1</title>
+        <header> 
+            <nav> Home </nav>   
+        </header>
+    </head>
+    <body>
+        <h3> Student registration</h3>
+        <form action="submit.php" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="Enrollment">Enrollment:</label>
+            <input type="number" id="Enrollment" name="Enrollment"><br><br>
+            <label> Branch  </label>
+            <select id="branch" name="branch">
+                <option value="CSE">CSE</option>
+                <option value="IT">IT</option>
+            </select><br><br>
+            <label> Gender: </label><br>
+            <label>Male</label><input type="radio" id="male" name="gender" value="male">
+            <label>Female</label><input type="radio" id="female" name="gender" value="female">
+            <label>Others</label><input type="radio" id="others" name="gender" value="others"><br><br>   
+            <label> Mobile no:</label>
+            <input type="tel" id="mobile" name="mobile"><br><br>
+            <label for="email" id="email" name="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br>
+            <label for="password" id="password" name="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br><br>
+            <label> Upload Photo</label>
+            <input type="file" id="upload" name="Photo"><br><br>
+            <label >Remarks:</label>
+            <input type="textArea" id="remarks" name="remarks"><br><br>
+            <input type="submit" value="Submit">
+            <input type="reset" value="Reset">
+        </form>
+    </body>
+</html>
+

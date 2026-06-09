@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Awesome Example</title>
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        body { 
+            background: black;
+            font-family: sans-serif;
+            padding: 20px; 
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .icon-large { font-size: 70px;  }
+        .icon-twitch { color: purple; }
+        .icon-youtube { color: red; }
+        .icon-instagram {
+        background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;    
+    }
+        .icon-instagram:hover{ transition: transform 0.3s ease-in-out;  } 
+        .icon-spotify{ color: rgb(38, 201, 16) ; }
+        .icon-discord{ color: rgb(88, 88, 255) }
+        .icon{
+            transition: 0.3s;
+        }
+        .icon:hover {
+            transform:  scale(1.2);
+            
+        }
+        .h1{
+            color: rgb(19, 16, 194);
+
+        }
+        .btn{
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="h1">Font Awesome Icons</h1>
+    <a href="https://www.youtube.com" target="_blank"><button class="btn"><i class="icon icon-youtube fa-brands fa-youtube icon-large"></i></button></a><br>
+    <a href="https://open.spotify.com" target="_blank"><button class="btn"><i class="icon icon-spotify fa-brands fa-spotify icon-red icon-large"></i></button></a><br>
+    <a href="https://www.instagram.com" target="_blank"><button class="btn"><i class="icon icon-instagram fa-brands fa-instagram icon-large"></i></button></a><br>
+    <a href="https://www.twitch.tv" target="_blank"><button class="btn"><i class="icon icon-twitch fa-brands fa-twitch icon-large"></i></button></a><br>
+    <a href="https://discord.com" target="_blank"><button class="btn"><i class="icon icon-discord fa-brands fa-discord icon-large"></i></button></a><br>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast | Solid UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .weather-card {
+            background-color: #ffffff; 
+            width: 350px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+            color: #333;
+        }
+
+        .search-container {
+            display: flex;
+            margin-bottom: 25px;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px 0 0 8px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-container button {
+            background-color: #551e75;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .search-container button:hover {
+            background-color: #b90eb1;
+        }
+
+        .city-name {
+            font-size: 1.8rem;
+            color: #551e75;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .temp-display {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 15px 0;
+            color: #222;
+        }
+
+        .weather-desc {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 2px solid #f4f4f4;
+            padding-top: 20px;
+            gap: 15px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="weather-card">
+        <div class="search-container">
+            <input type="text" id="citySearch" placeholder="Search City...">
+            <button onclick="updateWeather()">GO</button>
+        </div>
+
+        <div id="weather-content">
+            <h2 class="city-name" id="displayCity">New York</h2>
+            <div class="temp-display" id="displayTemp">18°C</div>
+            <p class="weather-desc" id="displayDesc">Scattered Clouds</p>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-label">Humidity</span>
+                    <span class="stat-value" id="displayHumid">62%</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Wind</span>
+                    <span class="stat-value" id="displayWind">14 km/h</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateWeather() {
+            const city = document.getElementById('citySearch').value;
+            if (!city) return;
+
+            document.getElementById('displayCity').innerText = city;
+            document.getElementById('displayTemp').innerText = Math.floor(Math.random() * 40) + "°C";
+            
+            const conditions = ["Sunny", "Rainy", "Cloudy", "Stormy", "Clear Skies"];
+            const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+            
+            document.getElementById('displayDesc').innerText = randomCondition;
+            document.getElementById('displayHumid').innerText = Math.floor(Math.random() * 100) + "%";
+            document.getElementById('displayWind').innerText = Math.floor(Math.random() * 25) + " km/h";
+        }
+    </script>
+
+</body>
+</html>

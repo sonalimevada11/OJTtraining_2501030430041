@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlaid Layers and Floats</title>
+    <style>
+        
+        @layer first, second, third;
+
+        
+        .stack-container {
+            display: grid;
+            place-items: center;
+            height: 100vh;      
+            background-color: #141412;
+        }
+
+        
+        h1 {
+            grid-area: 1 / 1;   
+            width: 300px;
+            height: 150px;
+            display: flex;
+            align-items: left;
+            justify-content: center;
+            border: 3px solid black;
+            text-align: center;
+            font-family: sans-serif;
+            transition: transform 0.3s ease;
+        }
+
+        
+        @layer first {
+            .class1 {
+                background-color: rgba(0, 128, 0, 0.7); 
+                color: white;
+                transform: translate(-40px, -40px);   
+                z-index: 1;
+            }
+        }
+
+        @layer second {
+            .class2 {
+                background-color: rgba(255, 0, 0, 0.7); 
+                color: white;
+                transform: translate(0, 0);           
+                z-index: 2;
+            }
+        }
+
+        @layer third {
+            .class3 {
+                background-color: rgba(0, 0, 255, 0.7);
+                color: white;
+                transform: translate(40px, 40px);  
+                z-index: 3;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="stack-container">
+        
+        <h1 class="class1">First Layer</h1>
+        <h1 class="class2">Second Layer</h1>
+        <h1 class="class3">Third Layer</h1>
+    </div>
+
+</body>
+</html>

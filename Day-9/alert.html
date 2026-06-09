@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS popup boxes</title>
+    <style>
+        body{
+            background: black;
+            font-family: Arial, sans-serif;
+            text-decoration: color(white );
+            text-align: center;
+            padding: 50px;
+        }
+        button{
+            background-color: #5e5352;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover{
+            background-color: #352c2b;
+        }
+        .card{
+            background-color: #5e5352;
+            color: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card:hover{
+            background-color: #352c2b;
+            transform: scale(1.05);
+            transition: ease-in-out 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h1>JS popup boxes</h1>
+    <p>This is an example of JS popup boxes and JS variables.</p>
+    <button onclick="myFunction()">Alert Box</button>
+    <p id="alert-box"></p>
+    <button onclick="confirmbox()">Confirm Box</button>
+    <p id="confirm-box"></p>    
+    <button onclick="promptbox()">Prompt Box</button>
+    <p id="prompt-box"></p>
+    <p class="card"id="demo"></p>
+
+    <script>
+        function myFunction(){
+            alert("This is a JS alert.");
+        }
+        function confirmbox(){
+            var r = confirm("Do you want to continue?");
+            if (r == true) {
+                document.getElementById("confirm-box").innerHTML = "You pressed OK!";
+            } else {
+                document.getElementById("confirm-box").innerHTML = "You pressed Cancel!";
+            }
+        }
+        function promptbox(){
+            var p = prompt("Please enter your name:", "Veer");
+            if (p == null || p ==""){
+                document.getElementById("prompt-box").innerHTML = "User cancelled the prompt.";
+                
+            }
+            else{
+                document.getElementById("prompt-box").innerHTML ="Hello " + p + "! This is a prompt box example.";
+            }
+        }
+        var x = 5;
+        var y = 6;
+        var z = x + y;
+        let a = 10;
+        const b = 20;
+        document.getElementById("demo").innerHTML = "The value of z is: " + z + "[using var]";
+        document.getElementById("demo").innerHTML += "<br>The value of a is: " + a + "[using let]";
+        document.getElementById("demo").innerHTML += "<br>The value of b is: " + b + "[using const]";
+
+    </script>
+</body>
+</html> 

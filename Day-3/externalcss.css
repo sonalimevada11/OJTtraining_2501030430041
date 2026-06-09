@@ -1,0 +1,26 @@
+.class1
+{
+    color:blue;
+}
+.class2
+{
+    text-align: center;
+}
+#id1
+{
+    font-size: 40px;
+    
+}
+h3,p,div, .class3, #id1
+{
+    font-family: papyrus;
+    font-style: italic;
+}
+div h1
+{
+    color:red;
+}
+div h2
+{
+    color:green;
+}

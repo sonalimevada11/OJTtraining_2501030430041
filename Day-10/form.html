@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Js Website</title>
+    <style>
+        /* Modern CSS Reset & Minimal Color Palette Variables */
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --sidebar-bg: #f1f5f9;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --primary: #0e7490;
+            --primary-hover: #06b6d4;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+        }
+
+        header {
+            width: 100%;
+            height: 12vh;
+            background: var(--text-dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px; 
+            box-sizing: border-box;
+        }
+
+        .txt {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Reusable Sleek Button Styles */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out; 
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        aside {
+            width: 20%;
+            height: 80vh; 
+            background: var(--sidebar-bg);
+            float: left;
+            text-align: center;
+            padding-top: 20px;
+            box-sizing: border-box;
+            border-right: 1px solid var(--border-color);
+        }
+
+        aside h2 {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        aside .btn {
+            width: 80%;          
+            box-sizing: border-box;
+            margin: 0 auto 15px auto;      
+            display: block;
+            background: transparent;
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+        }
+
+        aside .btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        main {
+            width: 80%;
+            height: 80vh; 
+            background: var(--bg-main);
+            float: left;
+            padding: 40px;
+            box-sizing: border-box;
+            overflow-y: auto; /* Permitting content to scroll if it overflows */
+        }
+
+        .page h2 {
+            margin-top: 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        /* --- FLEXBOX CENTERED FORM CARD --- */
+        .page-centered {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px; /* Restricts the card from getting too wide */
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        /* Modern Form Elements Styling */
+        form label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        form input:focus {
+            border-color: var(--primary);
+        }
+
+        form .btn {
+            width: 100%;
+            padding: 12px;
+        }
+
+        /* Layout Fixes for Popups & Galleries */
+        .flex-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .popup-btn {
+            background-color: #64748b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-right: 10px;
+            transition: all 0.2s;
+        }
+
+        .popup-btn:hover {
+            background-color: #475569;
+        }
+
+        .img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .img:hover {
+            transform: scale(1.03);
+        }
+
+        footer {
+            width: 100%;
+            height: 8vh;
+            background: var(--text-dark);
+            color: #94a3b8;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clear: both; 
+        }
+        
+        .page {
+            display: none;
+            height: 100%;
+        }
+
+        .page.active {
+            display: block;
+        }
+        
+        /* Ensures layout behavior works correctly for centered pages when activated */
+        .page.page-centered.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <header>
+       <h1 class="txt">My Website</h1>
+        <nav>
+            <button class="btn nav-btn" data-target="home">Home</button>
+            <button class="btn nav-btn" data-target="about">About</button>
+            <button class="btn nav-btn" data-target="contact">Contact</button>
+            <button class="btn nav-btn" data-target="login">Login</button>
+            <button class="btn nav-btn" data-target="register">Register</button>
+        </nav>
+    </header>
+
+    <aside>
+        <h2>Menu</h2>
+        <button class="btn nav-btn" data-target="dashboard">Dashboard</button>
+        <button class="btn nav-btn" data-target="popups">Popups</button>
+        <button class="btn nav-btn" data-target="image">Image Gallery</button>
+        <button class="btn nav-btn" data-target="video">Videos</button>
+    </aside>
+    
+    <main>
+        <section id="home" class="page active">
+            <h2>Home</h2>
+            <p>Welcome to my website</p>
+        </section>
+        
+        <section id="about" class="page">
+            <h2>About</h2>
+            <p>About us</p>
+        </section>
+
+        <section id="contact" class="page">
+            <h2>Contact</h2>
+            <p>contact info.</p>
+        </section>
+
+        <section id="dashboard" class="page">
+            <h2>Dashboard</h2>
+            <p>dashboard</p>
+        </section>
+
+        <section id="popups" class="page">
+            <h2>Popup boxes</h2>
+            <p>This is an example of JS popup boxes and JS variables.</p>
+            <button onclick="myFunction()" class="popup-btn">Alert Box</button>
+            <p id="alert-box"></p>
+            <button onclick="confirmbox()" class="popup-btn">Confirm Box</button>
+            <p id="confirm-box"></p>    
+            <button onclick="promptbox()" class="popup-btn">Prompt Box</button>
+            <p id="prompt-box"></p>
+            <p id="demo"></p>
+        </section>
+
+        <section id="image" class="page">
+            <h2>Image Gallery</h2>
+            <div class="flex-container">
+                <img class="img" src="https://picsum.photos/200" alt="Image 1">
+                <img class="img" src="https://picsum.photos/200" alt="Image 2">
+                <img class="img" src="https://picsum.photos/200" alt="Image 3">
+            </div>   
+        </section>
+
+        <section id="video" class="page">
+            <h2>Videos</h2>
+            <div class="flex-container">
+                <iframe width="45%" height="250" src="https://www.youtube.com/embed/SJPu1spHqfk?si=e4HUsgn4gOkoti_v" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="45%" height="250" src="https://www.youtube.com/embed/f_bKjZeJBBI?si=dLuu3r02GcZYxQcX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <!-- Centered Login Page -->
+        <section id="login" class="page page-centered">
+            <div class="card">
+                <h2>Login</h2>
+                <form action="#" method="post">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username">
+                    
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                    
+                    <input type="submit" value="Login" class="btn">
+                </form>
+            </div>
+        </section>
+
+        <!-- Centered Register Page -->
+        <section id="register" class="page page-centered">
+            <div class="card">
+                <h2>Register</h2>
+                <form action="#" method="post">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" name="username">
+                    
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                    
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" name="password">
+                    
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password">
+                    
+                    <input type="submit" value="Register" class="btn">
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2026 My Website.</p>
+    </footer>
+
+    <script>
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const pages = document.querySelectorAll('.page');
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                pages.forEach(page => page.classList.remove('active'));
+                const targetId = btn.getAttribute('data-target');
+                const targetPage = document.getElementById(targetId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+            });
+        });
+
+        function myFunction(){
+            alert("Alert box example.");
+        }
+        
+        function confirmbox(){
+            var r = confirm("Do you want to continue?");
+            if (r == true) {
+                document.getElementById("confirm-box").innerHTML = "You pressed OK!";
+            } else {
+                document.getElementById("confirm-box").innerHTML = "You pressed Cancel!";
+            }
+        }
+        
+        function promptbox(){
+            var p = prompt("Please enter your name:", "Veer");
+            if (p == null || p ==""){
+                document.getElementById("prompt-box").innerHTML = "User cancelled the prompt.";
+            } else {
+                document.getElementById("prompt-box").innerHTML ="Hello " + p + ". This is a prompt box example.";
+            }
+        }
+    </script>
+</body>
+</html>

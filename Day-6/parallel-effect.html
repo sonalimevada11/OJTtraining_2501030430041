@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>parallax effect</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .parallax-section {
+            background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100%;
+        }
+
+        .normal-section {
+            width: 100%;
+            height: 50%;
+            background-color: #111;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            text-transform: lowercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="parallax-section"></div>
+
+    <div class="normal-section">
+        scroll down to see the parallax effect
+    </div>
+
+    <div class="parallax-section"></div>
+
+</body>
+</html>

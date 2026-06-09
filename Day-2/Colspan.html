@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colspan</title>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+    font-family: sans-serif;
+  }
+  td {
+    border: 1px solid #333;
+    padding: 15px;
+    text-align: center;
+  }
+  .flexing {
+    background-color: #f0f0f0; 
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<table>
+  <tbody>
+    
+    <tr> 
+      <td colspan="7" class="flexing">c</td> 
+    </tr>
+    
+    
+    <tr> 
+      <td colspan="3" class="flexing"> 3 </td> 
+      <td colspan="4" class="flexing">4 </td> 
+    </tr>
+    
+    
+    <tr> 
+      <td colspan="2" class="flexing"> 2 </td> 
+      <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> 
+    </tr>
+    
+    
+    <tr> 
+      <td>1</td> <td>2</td> <td>3</td> <td>4</td> <td>5</td> <td>6</td> <td>7</td> 
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            background-color: #121212;
+            margin: 0;
+            height: 100vh;
+            
+            overflow: hidden; 
+            
+            position: relative; 
+        }
+
+        .rgb-spin-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 12px;
+            position: absolute;
+            
+            
+            translate: -50% -50%; 
+            
+            
+            animation: 
+                box-path 5s linear infinite,
+                spin 5s linear infinite,
+                rgb-drip 5s linear infinite;
+        }
+
+        
+        @keyframes box-path {
+            
+            0%   { top: 120px; left: 50vw; } 
+            25%  { top: 50vh; left: calc(100vw - 360px); } 
+            50%  { top: calc(100vh - 120px); left: 50vw; } 
+            75%  { top: 50vh; left: 30px; } 
+            100% { top: 120px; left: 50vw; } 
+        }
+
+        @keyframes spin {
+            0% { rotate: 0deg; }
+            100% { rotate: 360deg; }
+        }
+
+        @keyframes rgb-drip {
+            0%   { background-color: #ff4757; }
+            25%  { background-color: #1e90ff; }
+            50%  { background-color: #2ed573; }
+            75%  { background-color: #ffa502; }
+            100% { background-color: #ff4757; }
+        }
+    </style>
+</head>
+<body>
+    <div class="rgb-spin-box"></div>
+</body>
+</html>

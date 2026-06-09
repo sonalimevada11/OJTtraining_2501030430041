@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: whitesmoke;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background-color: #333;
+      color: white;
+      padding: 15px;
+      text-align: left;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    section.registration-box {
+      background: rgb(160, 145, 145);
+      padding: 20px;
+      border-radius: 8px;
+      border: 4px solid darkgray;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+      width: 667px;
+    }
+    section.registration-box h2 {
+      background-color: gray;
+      color: black;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      color: white;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 3px solid white;
+      border-radius: 4px;
+    }
+    input[type="radio"] {
+      width: auto;
+      margin-left: 5px;
+    }
+    input[type="submit"], input[type="reset"] {
+      width: 48%;
+      margin-top: 15px;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    input[type="submit"]:hover, input[type="reset"]:hover {
+      background-color: #555;
+    }
+    footer {
+      background-color:#333;
+      color:white;
+      text-align:center;
+      padding:15px;
+      margin-top:30px;
+      width: 100%;
+    }
+    footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 30px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-slider {
+  display: flex;
+  width: 400%;
+  animation: slide 120s infinite;
+}
+
+.slide {
+  width: 100%;
+  flex-shrink: 0;
+  font-size: 18px;
+  padding: 10px;
+}
+
+@keyframes slide {
+0%   { transform: translateX(0%); }
+  24%  { transform: translateX(0%); }    
+  
+  25%  { transform: translateX(-100%); }
+  49%  { transform: translateX(-100%); } 
+  
+  50%  { transform: translateX(-200%); }
+  74%  { transform: translateX(-200%); } 
+  
+  75%  { transform: translateX(-300%); }
+  99%  { transform: translateX(-300%); } 
+  
+  100% { transform: translateX(0%); } 
+  </style>
+</head>
+<body> 
+  <header>
+    <nav> 
+      <a href="Home.html">Home</a> 
+      <a href="signup.html">Signup</a>
+      <a href="login.html">Login</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="registration-box">
+      <h2>Student Registration</h2>
+      <form action="submit.php" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+
+        <label for="Enrollment">Enrollment:</label>
+        <input type="number" id="Enrollment" name="Enrollment">
+
+        <label for="branch">Branch:</label>
+        <select id="branch" name="branch">
+          <option value="CSE">CSE</option>
+          <option value="IT">IT</option>
+        </select>
+
+        <label>Gender:</label>
+        <label><input type="radio" name="gender" value="male"> Male</label>
+        <label><input type="radio" name="gender" value="female"> Female</label>
+        <label><input type="radio" name="gender" value="others"> Others</label>
+
+        <label for="mobile">Mobile no:</label>
+        <input type="tel" id="mobile" name="mobile" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="upload">Upload Photo:</label>
+        <input type="file" id="upload" name="Photo">
+
+        <label for="remarks">Remarks:</label>
+        <textarea id="remarks" name="remarks"></textarea>
+
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+      </form>
+    </section>
+  </main>
+
+  <footer>
+  <div class="footer-slider">
+    <div class="slide">Welcome to Silver Oak University</div>
+    <div class="slide">Admissions Open for 2026</div>
+    <div class="slide">Contact us: info@university.com</div>
+    <div class="slide">Follow us on Social Media</div>
+  </div>
+</footer>
+</body>
+</html>

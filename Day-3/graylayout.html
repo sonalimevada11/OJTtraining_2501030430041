@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grayscale aesthetic</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #1e1e1e;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            letter-spacing: -0.05em;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background-color: #242424;
+            padding: 1.5rem;
+            border-radius: 30px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #333;
+            transition: transform 0.2s ease;
+            text-align: center;
+            
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #e0e0e0;
+            color: gold;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dark Mode</h1>
+        <p>This webpage is made using gray layout.</p>
+    </header>
+
+    <main>
+        <div class="card">
+            <h2>Silveroak university</h2>
+            <p>click the button to redirect to the silveroak university website.</p>
+            <a href="https://silveroakuni.ac.in/" class="btn">Redirect</a>
+        </div>
+
+        <div class="card">
+            <h2>Spiderman Brand New Day</h2>
+            <p>Watch the latest trailer here👇</p>
+            <a href="https://youtu.be/8TZMtslA3UY?si=V7IgsIevc02oL-Bg" class="btn">click me</a>
+        </div>
+        <div class="card">
+            <h2>Instagram</h2>
+            <a href="https://www.instagram.com" class="btn">Go</a>
+        </div>
+        <div class="card">
+            <h2>Facebook</h2>
+            <a href="https://www.facebook.com" class="btn">Go</a>
+    </main>
+</body>
+</html>
