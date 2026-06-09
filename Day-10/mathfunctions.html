@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Math Functions</title>
+    <style>
+        :root {
+            --bg-main: #000000;
+            --bg-card: #0b0d2b;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --primary: #0e7490;
+            --border-color: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --accent: #059669;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        header {
+            background-color: var(--text-dark);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        header p {
+            margin: 10px 0 0 0;
+            color: #94a3b8;
+            font-size: 1rem;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        
+        .math-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        
+        .math-card {
+            background-color: var(--bg-card);
+            width: 280px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .math-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        }
+
+        .math-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-family: monospace;
+        }
+
+        .math-card .description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .math-card .example-box {
+            background-color: var(--code-bg);
+            border-radius: 6px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .example-box .code {
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .example-box .result {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        footer {
+            background-color: var(--text-dark);
+            height: 40px;
+            text-align: center;    
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>JavaScript Math Functions</h1>
+        <p>Examples of JavaScript Math functions</p>
+    </header>
+
+    <main>
+        <div id="math-functions-container" class="math-grid"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Math Reference Guide.</p>
+    </footer>
+
+    
+    <script src="math.js"></script>
+</body>
+</html>
